@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QRcraft — QR Code Generator</title>
+<title>QR Generator — Guicks Tools</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
@@ -50,7 +50,7 @@
     display: flex; align-items: center; justify-content: center;
   }
   .logo-icon svg { width: 18px; height: 18px; fill: white; }
-  .logo-name { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 600; color: var(--ink); letter-spacing: -0.3px; }
+  .logo-name { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 600; color: var(--ink); letter-spacing: -0.3px; display: flex; align-items: center; gap: 6px; }
   .logo-name span { color: var(--accent); }
   .nav-tag { font-size: 11.5px; font-weight: 400; color: var(--muted); }
 
@@ -211,7 +211,7 @@
 
   .dl-section { padding: 18px 26px 24px; border-top: 1px solid var(--rule); display: none; }
   .dl-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 11px; }
-  .dl-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .dl-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 8px; }
 
   .dl-btn {
     padding: 11px 6px; border-radius: 9px;
@@ -226,7 +226,8 @@
     background: var(--bg); color: var(--ink2); border: 1.5px solid var(--rule);
   }
   .dl-btn.svg:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
-  .dl-btn.copy:hover { border-color: var(--accent2); color: var(--accent2); }
+  .dl-btn.jpg { background: var(--bg); color: var(--ink2); border: 1.5px solid var(--rule); }
+  .dl-btn.jpg:hover { border-color: var(--accent2); color: var(--accent2); }
   .size-note { text-align: center; font-size: 11px; color: var(--muted); margin-top: 10px; }
 
   .type-section { display: none; }
@@ -248,14 +249,14 @@
     <div class="logo-icon">
       <svg viewBox="0 0 24 24"><path d="M3 3h7v7H3zm0 11h7v7H3zm11-11h7v7h-7zm0 11h3v3h-3zm4 0h3v3h-3zm-4 4h3v3h-3zm4 0h3v3h-3z"/></svg>
     </div>
-    <span class="logo-name">QR<span>craft</span></span>
+    <span class="logo-name"><span class="logo-parent"><a href="https://guicks.com" style="color:var(--muted);text-decoration:none;font-family:'Outfit',sans-serif;font-size:14px;font-weight:500;">guicks.com</a></span> <span style="color:var(--rule);font-family:'Outfit',sans-serif;font-size:14px;font-weight:300;">/ </span>QR Generator</span>
   </div>
   <span class="nav-tag">Free · No signup required · Instant download</span>
 </nav>
 
 <div class="hero">
-  <div class="hero-pill">QR Code Generator</div>
-  <h1>Create beautiful QR codes<br>in seconds</h1>
+  <div class="hero-pill">Guicks Tools</div>
+  <h1>QR Code Generator</h1>
   <p>Generate QR codes for links, WhatsApp, contacts, emails and more — ready to download and print.</p>
 </div>
 
@@ -421,6 +422,7 @@
         <div class="dl-label">Download your QR</div>
         <div class="dl-grid">
           <button class="dl-btn png" onclick="downloadPNG()"><span class="dl-icon">⬇</span>PNG</button>
+          <button class="dl-btn jpg" onclick="downloadJPG()"><span class="dl-icon">⬇</span>JPG</button>
           <button class="dl-btn svg" onclick="downloadSVG()"><span class="dl-icon">⬇</span>SVG</button>
           <button class="dl-btn copy" onclick="copyToClipboard()" id="copy-btn"><span class="dl-icon">⎘</span>Copy</button>
         </div>
@@ -532,7 +534,19 @@
     a.download = 'qrcraft.png'; a.href = c.toDataURL('image/png'); a.click();
   }
 
-  function downloadSVG() {
+  function downloadJPG() {
+    const c = getCanvas(); if (!c) return;
+    const tmp = document.createElement('canvas');
+    tmp.width = c.width; tmp.height = c.height;
+    const ctx = tmp.getContext('2d');
+    ctx.fillStyle = document.getElementById('qr-light').value || '#ffffff';
+    ctx.fillRect(0, 0, tmp.width, tmp.height);
+    ctx.drawImage(c, 0, 0);
+    const a = document.createElement('a');
+    a.download = 'qrcraft.jpg'; a.href = tmp.toDataURL('image/jpeg', 0.95); a.click();
+  }
+
+
     const c = getCanvas(); if (!c) return;
     const sz = c.width;
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${sz}" height="${sz}"><image href="${c.toDataURL()}" width="${sz}" height="${sz}"/></svg>`;
